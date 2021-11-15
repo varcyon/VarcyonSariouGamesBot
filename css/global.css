@@ -29,3 +29,11 @@ display: none;
     border-radius: 5px;
 
 }
+
+#load_test{
+    color: #333;
+    cursor: pointer;
+}
+#load_test:hover { 
+    text-decoration: underline;
+}

@@ -7,12 +7,21 @@
 <link href="css/global.css" rel="stylesheet" type="text/css">
 <link href="css/home.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/jQuery.js"></script>
+<script type="text/javascript" src="js/loader.js"></script>
+<script>
+$(function(){
+    loader.initialize()
+    $ ('#load_test').on('click',function(){
+        loader.showLoader();
+        setInterval(() => {
+            loader.hideLoader();
+        }, 3000);
+    });
+});
+</script>
 </head>
 <body>
-<div class="loading-overlay"></div>
-<div class="loading-overlay-image-container">
-    <img src="assets/loading.gif" class="loading-overlay-img" />
-</div>
+
 
 <div class="content">
     <div class="content-inner">
@@ -21,5 +30,7 @@
          </div>
     </div>  
 </div>
+<div class="footer-container">
+<div span id="load_test"> Loading overlay test ( lasts 3 secs)</span></div>
 </body>
 </html>
