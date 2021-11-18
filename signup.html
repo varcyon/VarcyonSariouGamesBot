@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<head>
+    <title>VarcyonSariouGames Bot-Signup</title>
+    <link href= "https://fonts.googleapis.com/css?family=Coda" rel="stylesheet">
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<link href="css/global.css" rel="stylesheet" type="text/css">
+<link href="css/signup.css" rel="stylesheet" type="text/css">
+<script type="application/javascript" src="js/jQuery.js"></script>
+<script type="application/javascript" src="js/loader.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+<script>
+    AWS.config.update({
+  region: "us-west-2",
+  endpoint: 'http://localhost:80',
+  // accessKeyId default can be used while using the downloadable version of DynamoDB. 
+  // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.
+  accessKeyId: "AKIAT2EQZJRVQTJ7R665",
+  // secretAccessKey default can be used while using the downloadable version of DynamoDB. 
+  // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.
+  secretAccessKey: "PWlNN1jeV0OcFQQ8iWjqk2E+nmpn7LBdcaCKFu/q"
+});
+
+var dynamodb = new AWS.DynamoDB();
+
+function createMovies() {
+    var params = {
+        TableName : "Movies",
+        KeySchema: [
+            { AttributeName: "year", KeyType: "HASH"},
+            { AttributeName: "title", KeyType: "RANGE" }
+        ],
+        AttributeDefinitions: [
+            { AttributeName: "year", AttributeType: "N" },
+            { AttributeName: "title", AttributeType: "S" }
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5
+        }
+    };
+
+    dynamodb.createTable(params, function(err, data) {
+        if (err) {
+            document.getElementById('textarea').innerHTML = "Unable to create table: " + "\n" + JSON.stringify(err, undefined, 2);
+        } else {
+            document.getElementById('textarea').innerHTML = "Created table: " + "\n" + JSON.stringify(data, undefined, 2);
+        }
+    });
+}
+
+    $(function(){
+        loader.initialize();
+
+        $('#signup_button').on('click',function(){
+           $('#error_message').html('');
+           $('input').removeClass('invalid-input')
+           
+           var allFieldsFilledIn = true;
+           $('input').each(function(){
+               if('' == $(this).val()){// invalid.. nothing in there
+                $(this).addClass('invalid-input');
+                allFieldsFilledIn = false;
+               }
+           });
+
+           if(allFieldsFilledIn){
+            loader.showLoader();
+            //backend sign user up
+            window.location.href="login.html";
+           } else {
+            $('#error_message').html('All fields must be filled in!');
+                $(window).scrollTop(0);
+           }
+        });
+    });
+
+</script>
+
+</head>
+<body>
+    <div class="site-header">
+        <div class="site-header-pad">   
+            <a class="header-home-link" href="index.html">
+                VarcyonSariouGames Bot
+            </a>
+        </div>
+    </div>
+    <div class="site-content-container">
+        <div class="site-content-centered">
+            <div class="site-content-section">
+                <div class="site-content-section-inner">
+                    <div class="section-heading">Sign Up</div>  
+                    <form id="signup_form" name="signup_form">
+                        <div id="error_message" class="error-message"></div>
+                        <div >
+                            <div class="section-label">Email:</div>
+                            <div><input type="text" name="email" /></div>
+                        </div>
+                        <div class="section-mid-container">
+                            <div class="section-label">Username:</div>
+                            <div><input type="text" name="username" /></div>
+                        </div>
+                        <div class="section-mid-container">
+                            <div class="section-label">Password:</div>
+                            <div><input type="password" name="password" /></div>
+                        </div>
+                        <div class="section-mid-container">
+                            <div class="section-label">Confirm Password:</div>
+                            <div><input type="password" name="confirm_password" /></div>
+                        </div>
+                    </form>
+                    <div class="section-action-container">
+                        <div class="section-button-container" id="signup_button" onclick="createMovies();">
+                            Sign Up!
+                        </div>
+            <input id="createTableButton" type="button" value="Create Table" onclick="createMovies();" />
+                    </div>  
+                    <div class="section-footer-container">
+                        Already a member? <a class="a-default" href="login.html">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

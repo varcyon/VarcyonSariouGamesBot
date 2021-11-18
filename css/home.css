@@ -1,0 +1,21 @@
+@charset "utf-8";
+.content-inner {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 40px;
+}
+
+.content-inner-padding {
+	padding: 10px;
+}
+
+.footer-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.a-action {
+    color: #fff;
+    text-decoration: none;
+}

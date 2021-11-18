@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+    <head>
+<title>Varcyon Sariou Games </title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link href= "https://fonts.googleapis.com/css?family=Coda" rel="stylesheet">
+<link href="css/global.css" rel="stylesheet" type="text/css">
+<link href="css/home.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jQuery.js"></script>
+<script type="text/javascript" src="js/loader.js"></script>
+<script>
+$(function(){
+    loader.initialize()
+    $ ('#load_test').on('click',function(){
+        loader.showLoader();
+        setInterval(() => {
+            loader.hideLoader();
+        }, 3000);
+    });
+});
+</script>
+</head>
+<body>
+
+
+<div class="content">
+    <div class="content-inner">
+        <div class="content-inner-padding">
+            <div> Future home of the VarcyonSariouGames Bot!! </div>
+                <a class="a-action" href="signup.html">
+                    <div class="action-container pc-only">
+                        <div class="button-container">
+                            <div class="button-container-pad">
+                                Sign Up
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="a-action" href="signup.html">
+                    <div class="action-container mobile-only">
+                        <div class="button-container">
+                            <div class="button-container-pad">
+                                Sign Up
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>  
+</div>
+<div class="footer-container">
+<div span id="load_test"> Loading overlay test ( lasts 3 secs)</span></div>
+</body>

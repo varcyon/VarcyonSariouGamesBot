@@ -29,11 +29,46 @@ display: none;
     border-radius: 5px;
 
 }
+.button-container{
+    font-size: 14px;
+    background: #77c045;
+    border-radius: 5px;
+    border: 1px solid #77c045;
+}
 
+.button-container:hover{
+    border: 1px solid #fff;
+    background: rgba(0,0,0,0.5);
+}
+
+.a-action{
+   color: #fff;
+   text-decoration: none; 
+}
 #load_test{
     color: #333;
     cursor: pointer;
 }
 #load_test:hover { 
     text-decoration: underline;
+}
+
+@media screen and ( min-width: 800px){/*desktop*/
+    .pc-only{
+        display: block;
+    }
+    .mobile-only{
+        display: none;
+    }
+
+}
+@media screen and ( max-width: 800px){/*mobile*/
+    .pc-only{
+        display: none;
+    }
+    .mobile-only{
+        display: block;
+        color: aquamarine;
+    }
+
 }
