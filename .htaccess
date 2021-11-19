@@ -1,0 +1,7 @@
+RewriteEngine on
+<if "%{HTTP_HOST}= 'varcyon-sariou-games.s3.us-east-2.amazonaws.com'|| %{HTTP_HOST} = 'www.varcyon-sariou-games.s3.us-east-2.amazonaws.com'">
+RewriteCond %{HTTP_HOST} ^www\. [OR]
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$
+RewriteRule ^ https://%1%{REQUEST_URI} [NE,L, R=301]
+</if>

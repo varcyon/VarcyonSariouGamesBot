@@ -12,44 +12,6 @@
 <script type="application/javascript" src="js/loader.js"></script>
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
 <script>
-    AWS.config.update({
-  region: "us-west-2",
-  endpoint: 'http://localhost:80',
-  // accessKeyId default can be used while using the downloadable version of DynamoDB. 
-  // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.
-  accessKeyId: "AKIAT2EQZJRVQTJ7R665",
-  // secretAccessKey default can be used while using the downloadable version of DynamoDB. 
-  // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.
-  secretAccessKey: "PWlNN1jeV0OcFQQ8iWjqk2E+nmpn7LBdcaCKFu/q"
-});
-
-var dynamodb = new AWS.DynamoDB();
-
-function createMovies() {
-    var params = {
-        TableName : "Movies",
-        KeySchema: [
-            { AttributeName: "year", KeyType: "HASH"},
-            { AttributeName: "title", KeyType: "RANGE" }
-        ],
-        AttributeDefinitions: [
-            { AttributeName: "year", AttributeType: "N" },
-            { AttributeName: "title", AttributeType: "S" }
-        ],
-        ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5
-        }
-    };
-
-    dynamodb.createTable(params, function(err, data) {
-        if (err) {
-            document.getElementById('textarea').innerHTML = "Unable to create table: " + "\n" + JSON.stringify(err, undefined, 2);
-        } else {
-            document.getElementById('textarea').innerHTML = "Created table: " + "\n" + JSON.stringify(data, undefined, 2);
-        }
-    });
-}
 
     $(function(){
         loader.initialize();
@@ -69,7 +31,16 @@ function createMovies() {
            if(allFieldsFilledIn){
             loader.showLoader();
             //backend sign user up
-            window.location.href="login.html";
+            $.ajax({
+                url: 'php/process_signup.php',
+                data: $('#signup_form').serialize(),
+                type:'POST',
+                dataType:'json',
+                success: function (data){
+                    
+                }
+            });
+            //window.location.href="login.html";
            } else {
             $('#error_message').html('All fields must be filled in!');
                 $(window).scrollTop(0);
