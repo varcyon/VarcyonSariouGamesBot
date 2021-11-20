@@ -45,6 +45,18 @@ display: none;
    color: #fff;
    text-decoration: none; 
 }
+.twitch-button-container{
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    background: #9147ff;
+    
+}
+.twitch-button-container:hover{
+    background: #773ce8;
+}
+
 #load_test{
     color: #333;
     cursor: pointer;
