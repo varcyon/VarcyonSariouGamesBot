@@ -11,7 +11,7 @@ include_once "../php/twitch_api.php"
 <link href="../css/global.css" rel="stylesheet" type="text/css">
 <link href="../css/home.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="../js/jQuery.js"></script>
-<script type="text/javascript" src="../js/loader.js"></script>
+<!-- <script type="text/javascript" src="../js/loader.js"></script>
 <script>
     $(function(){
         loader.initialize()
@@ -22,7 +22,7 @@ include_once "../php/twitch_api.php"
         }, 3000);
     });
 });
-</script>
+</script> -->
 <?php
 if(isset($_GET['code']) && isset($_GET['state']) && $_GET['state']== $_SESSION['twitch_state']){
     $vsgTwitchApi = new vsgTwitchAPI(TWITCH_CLIENT_ID,TWITCH_CLIENT_SECRET);

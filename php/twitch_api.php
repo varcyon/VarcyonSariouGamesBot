@@ -28,9 +28,56 @@ class vsgTwitchAPI{
     }
     public function tryAndLoginWithTwitch($code,$redirectUri){
         $accessToken = $this->getTwitchAccessToken($code,$redirectUri);
+        $status = $accessToken['status'];
+        $message = $accessToken['message'];
+
+        if('ok' == $status){
+            $this->_accessToken = $accessToken['api_data']['access_token'];
+            $this->_refreshToken = $accessToken['api_data']['refresh_token'];
+
+            $user_info = $this->getUserInfo();
+
+            echo '<pre>';
+            print_r($user_info);
+            
+            $status = $user_info['status'];
+            $message = $user_info['message'];
+
+            if('ok' == $user_info['status'] && isset($user_info['api_data']['data'][0])){
+                $this->_logUserInWithTwitch($user_info['api_data']['data'][0]);
+            }
+    
+        }
+        return array(
+            'status'=> $status,
+            'message'=> $message
+        );
+    }
+    private function _logUserInWithTwitch($apiUserInfo){
+        $_SESSION['twitch_user_info'] = $apiUserInfo;
+        $_SESSION['twitch_user_info']['access_token'] = $this->_accessToken;
+        $_SESSION['twitch_user_info']['refresh_token'] = $this->_refreshToken;
         echo '<pre>';
-        print_r($accessToken);
+        print_r($_SESSION['twitch_user_info']);
         die();
+    //TODO: Look user up in DynamoDB
+    }
+    public function getUserInfo(){
+        $endpoint = self::TWITCH_API_DOMAIN . 'users';
+        $apiParams = array(
+            'endpoint' => $endpoint,
+            'type' => 'GET',
+            'authorization' => $this->getAuthorizationHeaders(),
+            'url_params' => array()
+        );
+        return $this->makeApiCall($apiParams);
+
+    }
+    public function getAuthorizationHeaders(){
+        return array(
+            'Client-ID: '. $this->_clientId,
+            'Authorization: Bearer ' . $this->_accessToken
+        );
     }
     public function getTwitchAccessToken($code,$redirectUri){
         $endpoint = self::TWITCH_ID_DOMAIN . 'oauth2/token';
@@ -58,15 +105,28 @@ class vsgTwitchAPI{
             CURLOPT_SSL_VERIFYHOST=> 2
         );
 
+        if(isset($params['authorization'])){
+            $curlOptions[CURLOPT_HEADER] = TRUE;
+            $curlOptions[CURLOPT_HTTPHEADER] = $params['authorization'];
+        }
+
         if('POST'== $params['type']){
             $curlOptions[CURLOPT_POST] = TRUE;
             $curlOptions[CURLOPT_POSTFIELDS] = http_build_query($params['url_params']);
+        } elseif ('GET' == $params['type']){
+            $curlOptions[CURLOPT_URL].= '?' . http_build_query($params['url_params']);
         }
 
         $ch = curl_init();
         curl_setopt_array($ch,$curlOptions);
         $apiResponse = curl_exec($ch);
-        $apiResponse = json_decode($apiResponse, true);
+        if(isset($params['authorization'])){
+            $headerSize = curl_getinfo($ch,CURLINFO_HEADER_SIZE);
+            $apiResponseBody = substr($apiResponse,$headerSize);
+            $apiResponse = json_decode($apiResponseBody, true);
+        } else {
+            $apiResponse = json_decode($apiResponse, true);
+        }
         curl_close($ch);
 
         return array(

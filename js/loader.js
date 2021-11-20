@@ -3,7 +3,7 @@ var loader = {
         var html = 
         '<div class="loading-overlay"></div>'+
         '<div class="loading-overlay-image-container">'+
-        ' <img src="assets/loading.gif" class="loading-overlay-img" />'+
+        ' <img src="../assets/loading.gif" class="loading-overlay-img" />'+
        ' </div>';
        $('body').append( html );
     },
